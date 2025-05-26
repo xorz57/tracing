@@ -25,6 +25,11 @@ int main() {
 ```
 
 <details>
+  <summary>Output</summary>
+  <img src="screenshots/output/factorial.png" alt="factorial">
+</details>
+
+<details>
   <summary>Perfetto</summary>
   <img src="screenshots/perfetto/factorial.png" alt="factorial">
 </details>
@@ -55,6 +60,11 @@ int main() {
   return 0;
 }
 ```
+
+<details>
+  <summary>Output</summary>
+  <img src="screenshots/output/fibonacci.png" alt="fibonacci">
+</details>
 
 <details>
   <summary>Perfetto</summary>
