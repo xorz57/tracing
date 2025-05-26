@@ -1,5 +1,10 @@
 # tracing
 
+A header-only C++ tracing library that generates Google Trace Format events.
+
+- Zero dependencies
+- Compatible with Perfetto and Trace Event Profiling Tool
+
 ## Examples
 
 ### Factorial
