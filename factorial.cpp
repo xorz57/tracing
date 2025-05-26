@@ -4,10 +4,10 @@ static tracing::Tracer s_tracer{"factorial.json"};
 
 static std::uint64_t factorial(std::uint64_t n) {
   if (n <= 1) {
-    tracing::InstantEvent event{s_tracer, "factorial.case0"};
+    const tracing::InstantEvent event{s_tracer, "factorial.case0"};
     return 1;
   }
-  tracing::DurationEvent event{s_tracer, "factorial.case1"};
+  const tracing::DurationEvent event{s_tracer, "factorial.case1"};
   return n * factorial(n - 1);
 }
 

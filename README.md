@@ -16,10 +16,10 @@ static tracing::Tracer s_tracer{"factorial.json"};
 
 static std::uint64_t factorial(std::uint64_t n) {
   if (n <= 1) {
-    tracing::InstantEvent event{s_tracer, "factorial.case0"};
+    const tracing::InstantEvent event{s_tracer, "factorial.case0"};
     return 1;
   }
-  tracing::DurationEvent event{s_tracer, "factorial.case1"};
+  const tracing::DurationEvent event{s_tracer, "factorial.case1"};
   return n * factorial(n - 1);
 }
 
@@ -53,10 +53,10 @@ static tracing::Tracer s_tracer{"fibonacci.json"};
 
 static std::uint64_t fibonacci(std::uint64_t n) {
   if (n <= 1) {
-    tracing::InstantEvent event{s_tracer, "fibonacci.case0"};
+    const tracing::InstantEvent event{s_tracer, "fibonacci.case0"};
     return n;
   }
-  tracing::DurationEvent event{s_tracer, "fibonacci.case1"};
+  const tracing::DurationEvent event{s_tracer, "fibonacci.case1"};
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
