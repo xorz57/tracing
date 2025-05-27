@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.30)
 
 project(tracing LANGUAGES CXX)
 
-add_executable(factorial factorial.cpp)
-target_compile_features(factorial PRIVATE cxx_std_11)
+add_library(tracing INTERFACE)
 
-add_executable(fibonacci fibonacci.cpp)
-target_compile_features(fibonacci PRIVATE cxx_std_11)
+target_include_directories(tracing INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/tracing>
+  $<INSTALL_INTERFACE:include/tracing>  # <prefix>/include/tracing
+)
+
+add_subdirectory(examples)
