@@ -7,6 +7,12 @@ A header-only C++ tracing library.
 
 ## Examples
 
+```bash
+cmake -B build -DCMAKE_BUILD_TYPE=Release -S .
+cmake --build build --config Release
+ctest --test-dir build --build-config Release --output-on-failure
+```
+
 ### Factorial
 
 ```cpp
