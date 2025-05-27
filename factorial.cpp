@@ -1,5 +1,7 @@
 #include "tracing.hpp"
 
+#include <cstdlib>
+
 static tracing::Tracer s_tracer{"factorial.json"};
 
 static std::uint64_t factorial(std::uint64_t n) {
@@ -11,7 +13,10 @@ static std::uint64_t factorial(std::uint64_t n) {
   return n * factorial(n - 1);
 }
 
-int main() {
-  factorial(20);
+int main(int argc, const char *argv[]) {
+  if (argc != 2)
+    return -1;
+  const std::uint64_t n{std::stoull(argv[1])};
+  factorial(n);
   return 0;
 }
