@@ -1,5 +1,7 @@
 # tracing
 
+[![CMake on multiple platforms](https://github.com/xorz57/tracing/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/xorz57/tracing/actions/workflows/cmake-multi-platform.yml)
+
 A header-only C++ tracing library.
 
 - Zero dependencies
