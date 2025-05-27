@@ -1,5 +1,7 @@
 #include "tracing.hpp"
 
+#include <string>
+
 static tracing::Tracer s_tracer{"factorial.json"};
 
 static std::uint64_t factorial(std::uint64_t n) {

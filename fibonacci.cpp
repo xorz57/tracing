@@ -1,5 +1,7 @@
 #include "tracing.hpp"
 
+#include <string>
+
 static tracing::Tracer s_tracer{"fibonacci.json"};
 
 static std::uint64_t fibonacci(std::uint64_t n) {
