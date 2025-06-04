@@ -2,11 +2,13 @@ cmake_minimum_required(VERSION 3.30)
 
 project(tracing LANGUAGES CXX)
 
-add_library(tracing INTERFACE)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-target_include_directories(tracing INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/tracing>
-  $<INSTALL_INTERFACE:include/tracing>  # <prefix>/include/tracing
+add_library(${PROJECT_NAME} INTERFACE)
+
+target_include_directories(${PROJECT_NAME} INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 
 add_subdirectory(examples)
