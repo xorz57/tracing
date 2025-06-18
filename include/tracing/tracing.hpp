@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <fstream>
 #include <mutex>
+#include <string_view>
 
 #if defined(_WIN32) || defined(_WIN64)
 #define WIN32_LEAN_AND_MEAN
@@ -41,45 +42,41 @@
 namespace tracing {
 class Tracer {
 public:
-  explicit Tracer(const char *filename) : m_ofstream(filename, std::ios::out) { m_ofstream << "{\"traceEvents\": ["; };
+  explicit Tracer(const std::string_view filename) : m_ofstream(filename.data(), std::ios::out) { m_ofstream << "{\"traceEvents\": ["; };
 
   ~Tracer() { m_ofstream << "]}"; }
 
-  void writeBeginDurationEvent(const char *name) {
+  void writeBeginDurationEvent(const std::string_view name) {
     writeDurationEvent(name, "function", "B", getProcessID(), getThreadID(), getTimeStamp());
   }
 
-  void writeEndDurationEvent(const char *name) {
+  void writeEndDurationEvent(const std::string_view name) {
     writeDurationEvent(name, "function", "E", getProcessID(), getThreadID(), getTimeStamp());
   }
 
-  void writeInstantEvent(const char *name) {
+  void writeInstantEvent(const std::string_view name) {
     writeInstantEvent(name, "function", "i", getProcessID(), getThreadID(), getTimeStamp(), "t");
   }
 
 private:
-  void writeDurationEvent(const char *name, const char *cat, const char *ph, std::uint64_t pid, std::uint64_t tid,
-                          std::uint64_t ts) {
+  void writeDurationEvent(const std::string_view name, const char *cat, const char *ph, std::uint64_t pid, std::uint64_t tid, std::uint64_t ts) {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_flag) {
       m_flag = false;
     } else {
       m_ofstream << ",";
     }
-    m_ofstream << "{\"name\":\"" << name << "\",\"cat\":\"" << cat << "\",\"ph\":\"" << ph << "\",\"pid\":" << pid
-               << ",\"tid\":" << tid << ",\"ts\":" << ts << "}";
+    m_ofstream << "{\"name\":\"" << name << "\",\"cat\":\"" << cat << "\",\"ph\":\"" << ph << "\",\"pid\":" << pid << ",\"tid\":" << tid << ",\"ts\":" << ts << "}";
   }
 
-  void writeInstantEvent(const char *name, const char *cat, const char *ph, std::uint64_t pid, std::uint64_t tid,
-                         std::uint64_t ts, const char *s) {
+  void writeInstantEvent(const std::string_view name, const char *cat, const char *ph, std::uint64_t pid, std::uint64_t tid, std::uint64_t ts, const char *s) {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_flag) {
       m_flag = false;
     } else {
       m_ofstream << ",";
     }
-    m_ofstream << "{\"name\":\"" << name << "\",\"cat\":\"" << cat << "\",\"ph\":\"" << ph << "\",\"pid\":" << pid
-               << ",\"tid\":" << tid << ",\"ts\":" << ts << ",\"s\":\"" << s << "\"}";
+    m_ofstream << "{\"name\":\"" << name << "\",\"cat\":\"" << cat << "\",\"ph\":\"" << ph << "\",\"pid\":" << pid << ",\"tid\":" << tid << ",\"ts\":" << ts << ",\"s\":\"" << s << "\"}";
   }
 
   static uint64_t getThreadID() {
@@ -116,7 +113,7 @@ private:
 
 class DurationEvent {
 public:
-  DurationEvent(Tracer &tracer, const char *name) : m_tracer(tracer), m_name(name) {
+  DurationEvent(Tracer &tracer, const std::string_view name) : m_tracer(tracer), m_name(name) {
     m_tracer.writeBeginDurationEvent(m_name);
   }
 
@@ -124,11 +121,11 @@ public:
 
 private:
   Tracer &m_tracer;
-  const char *m_name;
+  const std::string_view m_name;
 };
 
 class InstantEvent {
 public:
-  InstantEvent(Tracer &tracer, const char *name) { tracer.writeInstantEvent(name); }
+  InstantEvent(Tracer &tracer, const std::string_view name) { tracer.writeInstantEvent(name); }
 };
 } // namespace tracing
