@@ -59,7 +59,7 @@ public:
   }
 
 private:
-  void writeDurationEvent(const std::string_view name, const char *cat, const char *ph, std::uint64_t pid, std::uint64_t tid, std::uint64_t ts) {
+  void writeDurationEvent(const std::string_view name, const std::string_view cat, const std::string_view ph, std::uint64_t pid, std::uint64_t tid, std::uint64_t ts) {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_flag) {
       m_flag = false;
@@ -69,7 +69,7 @@ private:
     m_ofstream << "{\"name\":\"" << name << "\",\"cat\":\"" << cat << "\",\"ph\":\"" << ph << "\",\"pid\":" << pid << ",\"tid\":" << tid << ",\"ts\":" << ts << "}";
   }
 
-  void writeInstantEvent(const std::string_view name, const char *cat, const char *ph, std::uint64_t pid, std::uint64_t tid, std::uint64_t ts, const char *s) {
+  void writeInstantEvent(const std::string_view name, const std::string_view cat, const std::string_view ph, std::uint64_t pid, std::uint64_t tid, std::uint64_t ts, const std::string_view s) {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_flag) {
       m_flag = false;
@@ -79,21 +79,21 @@ private:
     m_ofstream << "{\"name\":\"" << name << "\",\"cat\":\"" << cat << "\",\"ph\":\"" << ph << "\",\"pid\":" << pid << ",\"tid\":" << tid << ",\"ts\":" << ts << ",\"s\":\"" << s << "\"}";
   }
 
-  static uint64_t getThreadID() {
+  static std::uint64_t getThreadID() {
 #if defined(_WIN32) || defined(_WIN64)
-    return static_cast<uint64_t>(GetCurrentThreadId());
+    return static_cast<std::uint64_t>(GetCurrentThreadId());
 #elif defined(__linux__)
-    return static_cast<uint64_t>(syscall(SYS_gettid));
+    return static_cast<std::uint64_t>(syscall(SYS_gettid));
 #else
 #error "Unknown Platform"
 #endif
   }
 
-  static uint64_t getProcessID() {
+  static std::uint64_t getProcessID() {
 #if defined(_WIN32) || defined(_WIN64)
-    return static_cast<uint64_t>(GetCurrentProcessId());
+    return static_cast<std::uint64_t>(GetCurrentProcessId());
 #elif defined(__linux__)
-    return static_cast<uint64_t>(syscall(SYS_getpid));
+    return static_cast<std::uint64_t>(syscall(SYS_getpid));
 #else
 #error "Unknown Platform"
 #endif
